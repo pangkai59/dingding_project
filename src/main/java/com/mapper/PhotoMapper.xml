@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mapper.PhotoMapper" >
+
+  <insert id="insertPhoto" parameterType="Map" useGeneratedKeys="true" keyProperty="userId" >
+    insert into dingding_photo (
+      <if test="#{userId} != null">user_id</if>
+      <if test="#{userName} != null">,user_name</if>
+      <if test="#{firstPhotoName} != null">,first_photo_name</if>
+      <if test="#{firstPhotoPath} != null">,first_photo_path</if>
+      <if test="#{firstPhotoUrl} != null">,first_photo_url</if>
+      <if test="#{status} != null">,status</if>
+      <if test="#{firstCreateTime} != null">,first_create_time</if>
+      <if test="#{current_date_info} != null">,current_date_info</if>
+      <if test="#{firstNumTool} != null">,first_num_tool</if>
+      )
+    values
+    (
+      <if test="#{userId} != null">#{userId}</if>
+      <if test="#{userName} != null">,#{userName}</if>
+      <if test="#{firstPhotoName} != null">,#{firstPhotoName}</if>
+      <if test="#{firstPhotoPath}!=null">,#{firstPhotoPath}</if>
+      <if test="#{firstPhotoUrl}!=null"> ,#{firstPhotoUrl}</if>
+      <if test="#{status} != null">,#{status,jdbcType=INTEGER}</if>
+      <if test="#{firstCreateTime} != null">,#{firstCreateTime}</if>
+      <if test="#{currentDateInfo} != null">,#{currentDateInfo}</if>
+      <if test="#{firstNumTool} != null">,#{firstNumTool}</if>
+     )
+  </insert>
+
+  <update id="updatePhoto" parameterType="Map">
+     update dingding_photo
+     SET
+      <if test="#{secondPhotoName} != null">second_photo_name=#{secondPhotoName}</if>
+      <if test="#{secondPhotoPath} != null">,second_photo_path=#{secondPhotoPath}</if>
+      <if test="#{secondPhotoUrl} != null"> ,second_photo_url=#{secondPhotoUrl}</if>
+      <if test="#{secondCreateTime} != null">,second_create_time=#{secondCreateTime}</if>
+      <if test="#{status} != null">,status=#{status}</if>
+      <if test="#{secondNumTool} != null">,second_num_tool=#{secondNumTool}</if>
+     where 1=1
+      and    current_date_info=#{currentDateInfo}
+      and    user_id=#{userId}
+  </update>
+
+    <select id="getDataByCurrentDate" parameterType="Map"  resultType="Map">
+        select
+        user_id as userId,
+        user_name as userName ,
+        first_photo_name as firstPhotoName,
+        first_photo_path as firstPhotoPath,
+        first_photo_url   as  firstPhotoUrl,
+        first_create_time  as   firstCreateTime,
+        first_num_tool as firstNumTool,
+        second_photo_name  as  secondPhotoName,
+        second_photo_path  as  secondPhotoPath,
+        second_photo_url  as  secondPhotoUrl,
+        second_create_time  as  secondCreateTime,
+        second_num_tool as secondNumTool,
+        current_date_info  as  currentDateInfo,
+        status
+        from dingding_photo
+        where del=0
+        and current_date_info=#{currentDateInfo}
+        and user_id=#{userId}
+    </select>
+
+</mapper>
